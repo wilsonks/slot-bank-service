@@ -1,0 +1,34 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: slotbank
+      POSTGRES_USER: slotbank
+      POSTGRES_PASSWORD: slotbank
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U slotbank"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  slot-bank-service:
+    build: .
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/slotbank
+      DB_USER: slotbank
+      DB_PASSWORD: slotbank
+      SERVER_PORT: 8084
+      AUTH_SERVICE_JWKS_URL: http://slot-auth-service:8081/.well-known/jwks.json
+    ports:
+      - "8084:8084"
+
+volumes:
+  postgres_data:
