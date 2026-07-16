@@ -1,14 +1,12 @@
 package com.slotcentral.bank.service;
 
+import com.slotcentral.bank.config.RetryableTransaction;
 import com.slotcentral.bank.domain.*;
 import com.slotcentral.bank.dto.*;
 import com.slotcentral.bank.exception.*;
 import com.slotcentral.bank.repository.*;
-import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.retry.annotation.Backoff;
-import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,8 +48,7 @@ public class AccountService {
         return new AccountResponse(a.getPlayerUid(), a.getBalance(), a.getUpdatedAt());
     }
 
-    @Retryable(retryFor = OptimisticLockingFailureException.class,
-               maxAttempts = 10, backoff = @Backoff(delay = 50, multiplier = 2))
+    @RetryableTransaction
     @Transactional
     public LedgerEntryResponse deposit(String playerUid, MoneyRequest req) {
         Optional<LedgerEntry> existing = ledgerRepo.findByReferenceIdAndEntryType(req.getReferenceId(), EntryType.DEPOSIT);
@@ -69,8 +66,7 @@ public class AccountService {
         return LedgerEntryResponse.from(entry);
     }
 
-    @Retryable(retryFor = OptimisticLockingFailureException.class,
-               maxAttempts = 10, backoff = @Backoff(delay = 50, multiplier = 2))
+    @RetryableTransaction
     @Transactional
     public LedgerEntryResponse withdraw(String playerUid, MoneyRequest req) {
         Optional<LedgerEntry> existing = ledgerRepo.findByReferenceIdAndEntryType(req.getReferenceId(), EntryType.WITHDRAW);
@@ -92,8 +88,7 @@ public class AccountService {
         return LedgerEntryResponse.from(entry);
     }
 
-    @Retryable(retryFor = OptimisticLockingFailureException.class,
-               maxAttempts = 10, backoff = @Backoff(delay = 50, multiplier = 2))
+    @RetryableTransaction
     @Transactional
     public LedgerEntryResponse buyIn(String playerUid, MoneyRequest req) {
         Optional<LedgerEntry> existing = ledgerRepo.findByReferenceIdAndEntryType(req.getReferenceId(), EntryType.BUY_IN);
@@ -111,8 +106,7 @@ public class AccountService {
         return LedgerEntryResponse.from(entry);
     }
 
-    @Retryable(retryFor = OptimisticLockingFailureException.class,
-               maxAttempts = 10, backoff = @Backoff(delay = 50, multiplier = 2))
+    @RetryableTransaction
     @Transactional
     public LedgerEntryResponse buyOut(String playerUid, MoneyRequest req) {
         Optional<LedgerEntry> existing = ledgerRepo.findByReferenceIdAndEntryType(req.getReferenceId(), EntryType.BUY_OUT);
@@ -134,8 +128,7 @@ public class AccountService {
         return LedgerEntryResponse.from(entry);
     }
 
-    @Retryable(retryFor = OptimisticLockingFailureException.class,
-               maxAttempts = 10, backoff = @Backoff(delay = 50, multiplier = 2))
+    @RetryableTransaction
     @Transactional
     public BetReservationResponse reserveBet(BetReserveRequest req) {
         Optional<SpinReservation> existing = reservationRepo.findBySpinId(req.getSpinId());
@@ -164,8 +157,7 @@ public class AccountService {
         return BetReservationResponse.from(reservation);
     }
 
-    @Retryable(retryFor = OptimisticLockingFailureException.class,
-               maxAttempts = 10, backoff = @Backoff(delay = 50, multiplier = 2))
+    @RetryableTransaction
     @Transactional
     public BetReservationResponse settleBet(BetSettleRequest req) {
         SpinReservation reservation = reservationRepo.findBySpinId(req.getSpinId())
@@ -194,8 +186,7 @@ public class AccountService {
         return BetReservationResponse.from(reservation);
     }
 
-    @Retryable(retryFor = OptimisticLockingFailureException.class,
-               maxAttempts = 10, backoff = @Backoff(delay = 50, multiplier = 2))
+    @RetryableTransaction
     @Transactional
     public BetReservationResponse refundBet(String spinId) {
         SpinReservation reservation = reservationRepo.findBySpinId(spinId)
