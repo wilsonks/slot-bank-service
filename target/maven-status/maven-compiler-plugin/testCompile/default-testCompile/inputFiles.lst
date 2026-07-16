@@ -1,0 +1,4 @@
+/home/runner/work/slot-bank-service/slot-bank-service/src/test/java/com/slotcentral/bank/config/TestSecurityConfig.java
+/home/runner/work/slot-bank-service/slot-bank-service/src/test/java/com/slotcentral/bank/integration/BankIntegrationTest.java
+/home/runner/work/slot-bank-service/slot-bank-service/src/test/java/com/slotcentral/bank/integration/ConcurrencyTest.java
+/home/runner/work/slot-bank-service/slot-bank-service/src/test/java/com/slotcentral/bank/service/AccountServiceTest.java
