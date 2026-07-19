@@ -1,0 +1,4 @@
+com/slotcentral/bank/service/AccountServiceTest.class
+com/slotcentral/bank/config/TestSecurityConfig.class
+com/slotcentral/bank/integration/ConcurrencyTest.class
+com/slotcentral/bank/integration/BankIntegrationTest.class

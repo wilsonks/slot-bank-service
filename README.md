@@ -22,6 +22,7 @@ This service handles money movement only:
 - Flyway migrations
 - Micrometer Prometheus metrics
 - Testcontainers for PostgreSQL integration tests
+- Maven build
 
 ## API
 
@@ -178,7 +179,7 @@ docker compose up -d postgres
 ```bash
 export JAVA_HOME=/usr/lib/jvm/temurin-21-jdk-amd64
 export PATH=$JAVA_HOME/bin:$PATH
-./gradlew bootRun
+mvn spring-boot:run
 ```
 
 ## Testing
@@ -186,7 +187,7 @@ export PATH=$JAVA_HOME/bin:$PATH
 ```bash
 export JAVA_HOME=/usr/lib/jvm/temurin-21-jdk-amd64
 export PATH=$JAVA_HOME/bin:$PATH
-./gradlew test
+mvn test
 ```
 
 ## Build
@@ -194,7 +195,7 @@ export PATH=$JAVA_HOME/bin:$PATH
 ```bash
 export JAVA_HOME=/usr/lib/jvm/temurin-21-jdk-amd64
 export PATH=$JAVA_HOME/bin:$PATH
-./gradlew build
+mvn clean install
 ```
 
 ## Docker
